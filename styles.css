@@ -1,0 +1,986 @@
+/* ═══════════════════════════════════════════════════════════
+   ROMANTIC CONFESSION LETTER — STYLESHEET
+   ─────────────────────────────────────────────────────────
+   Color Palette:
+     --pink-100  #fff0f3   (lightest — page bg)
+     --pink-200  #ffd6e0   (envelope body)
+     --pink-300  #ffb3c6   (envelope flaps)
+     --pink-400  #ff8fab   (accents)
+     --pink-500  #fb6f92   (highlights / seal)
+     --pink-600  #e05780   (deep accent)
+     --cream     #fefaf4   (notebook paper)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --pink-100: #fff0f3;
+  --pink-200: #ffd6e0;
+  --pink-300: #ffb3c6;
+  --pink-400: #ff8fab;
+  --pink-500: #fb6f92;
+  --pink-600: #e05780;
+  --cream: #fefaf4;
+  --line-color: #b8d4e3;
+  --margin-color: #e88e9e;
+  --line-height-paper: 2rem;
+
+  --envelope-width: min(420px, 88vw);
+  --envelope-height: min(300px, 60vw);
+  --letter-width: min(500px, 92vw);
+
+  --anim-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body, a, button, .envelope-wrapper, .done-reading-btn, .play-music-btn {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%23b31b26' stroke='white' stroke-width='1.2' stroke-linejoin='round' d='M3 21l3.7-3.7C5.3 16 4 14.2 4 12c0-4.4 3.6-8 8-8 0 0 8-2 8-2s-2 8-2 8c-2.2 0-4 1.3-5.3 2.7L9 16.4 3 21z'/%3E%3C/svg%3E") 4 28, auto !important;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    160deg,
+    var(--pink-100) 0%,
+    #ffe4ec 40%,
+    var(--pink-200) 100%
+  );
+  font-family: 'Caveat', cursive;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ══════════════════════════════════════════════════════════
+   FLOATING HEARTS (background decoration)
+   ══════════════════════════════════════════════════════════ */
+.floating-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  bottom: -40px;
+  font-size: 1.2rem;
+  color: var(--pink-400);
+  opacity: 0;
+  animation: floatUp 8s ease-in infinite;
+  animation-delay: calc(var(--i) * 0.7s);
+  left: calc(var(--i) * 8.3% + 2%);
+}
+
+.heart:nth-child(even) {
+  font-size: 0.9rem;
+  color: var(--pink-300);
+  animation-duration: 10s;
+}
+
+.heart:nth-child(3n) {
+  font-size: 1.5rem;
+  color: var(--pink-500);
+  animation-duration: 7s;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CRAYON LILY DECORATIONS
+   ──────────────────────────────────────────────────────────
+   These are positioned with CSS so you only need to drop in
+   your crayon-style lily PNG/SVG files.  The `filter` gives
+   a soft, slightly textured crayon feel even to plain images.
+   ══════════════════════════════════════════════════════════ */
+.lily {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  width: clamp(100px, 18vw, 220px);
+  height: auto;
+  object-fit: contain;
+  opacity: 0.85;
+  /* Slight crayon / colored-pencil feel */
+  filter: saturate(0.9) contrast(0.95) brightness(1.05);
+  transition: opacity 0.6s ease;
+}
+
+/* Corner positions */
+.lily-top-left {
+  top: 1rem;
+  left: 1rem;
+  transform: rotate(-15deg);
+}
+
+.lily-top-right {
+  top: 1rem;
+  right: 1rem;
+  transform: rotate(15deg) scaleX(-1);
+}
+
+.lily-bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+  transform: rotate(10deg);
+}
+
+.lily-bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+  transform: rotate(-10deg) scaleX(-1);
+}
+
+/* Lilies that frame the letter (hidden until letter shows) */
+.lily-letter-left,
+.lily-letter-right {
+  position: fixed;
+  z-index: 5;
+  width: clamp(80px, 14vw, 170px);
+  opacity: 0;
+  transition: opacity 1s ease 1.2s;
+}
+
+.lily-letter-left {
+  top: 50%;
+  left: clamp(0.5rem, 3vw, 2rem);
+  transform: translateY(-50%) rotate(-10deg);
+}
+
+.lily-letter-right {
+  top: 50%;
+  right: clamp(0.5rem, 3vw, 2rem);
+  transform: translateY(-50%) rotate(10deg) scaleX(-1);
+}
+
+/* Show letter-framing lilies after envelope opens */
+body.opened .lily-letter-left,
+body.opened .lily-letter-right {
+  opacity: 0.8;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROMPT TEXT
+   ══════════════════════════════════════════════════════════ */
+.prompt-text {
+  position: fixed;
+  bottom: clamp(2rem, 8vh, 5rem);
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  color: var(--pink-600);
+  opacity: 0.9;
+  z-index: 10;
+  animation: gentlePulse 2.2s ease-in-out infinite;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  letter-spacing: 0.02em;
+}
+
+.prompt-text.hide {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ENVELOPE SHADOW
+   ══════════════════════════════════════════════════════════ */
+.envelope-shadow {
+  position: absolute;
+  top: calc(50% + 140px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(150, 40, 70, 0.15) 0%, transparent 70%);
+  z-index: 3;
+  transition: transform 1s var(--anim-ease), opacity 0.8s ease;
+  animation: shadowPulse 4s ease-in-out infinite;
+}
+
+body.opened .envelope-shadow {
+  opacity: 0;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.3; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ENVELOPE
+   ══════════════════════════════════════════════════════════ */
+.envelope-wrapper {
+  position: relative;
+  z-index: 4;
+  cursor: pointer;
+  transition: transform 1s var(--anim-ease), opacity 0.8s ease;
+  animation: envelopeFloat 4s ease-in-out infinite;
+}
+
+@keyframes envelopeFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+/* After opening, slide envelope up & shrink */
+.envelope-wrapper.opened {
+  transform: translateY(-50vh) scale(0.4);
+  opacity: 0;
+  pointer-events: none;
+  animation: none; /* stop floating */
+}
+
+.envelope {
+  position: relative;
+  width: var(--envelope-width);
+  height: var(--envelope-height);
+  perspective: 900px;
+}
+
+/* ── Envelope back (the colored body) ──────────────────── */
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: #fdfcfa;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.03),
+    0 8px 30px rgba(150, 40, 70, 0.15),
+    0 2px 8px rgba(150, 40, 70, 0.08);
+}
+
+/* ── Postage Stamp ─────────────────────────────────────── */
+.postage-stamp {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 45px;
+  height: 55px;
+  background: #fff;
+  border: 2px dashed #ddd;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.postage-stamp::after {
+  content: '♥';
+  color: #d13030;
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+/* ── Envelope front flaps ──────────────────────────────── */
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Left triangular flap */
+.envelope-flap-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #f5f3ef 50%, transparent 50%);
+  border-radius: 6px 0 0 6px;
+  filter: drop-shadow(2px 0 3px rgba(0,0,0,0.04));
+}
+
+/* Right triangular flap */
+.envelope-flap-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(-135deg, #f0eee8 50%, transparent 50%);
+  border-radius: 0 6px 6px 0;
+  filter: drop-shadow(-2px 0 3px rgba(0,0,0,0.04));
+}
+
+/* Bottom flap */
+.envelope-flap-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(to top, #eae7df 60%, transparent);
+  border-radius: 0 0 6px 6px;
+  z-index: 2;
+  filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.05));
+}
+
+/* ── Top flap (the one that animates open) ─────────────── */
+.envelope-flap-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 6;
+  transform-origin: top center;
+  transition: transform 0.8s var(--anim-ease);
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+}
+
+/* The actual paper triangle */
+.envelope-flap-top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #fdfcfa, #f4f1ea);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+}
+
+/* Opened state: flip the top flap back */
+.envelope.open .envelope-flap-top {
+  transform: rotateX(180deg);
+}
+
+/* ── Red Wax Seal ──────────────────────────────────────── */
+.seal {
+  position: absolute;
+  /* Move it down so its center aligns with the point of the flap (which is at 100% height) */
+  top: calc(100% - 25px);
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, #e83e4a, #b31b26 80%, #7a0c16);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #ffcccc;
+  box-shadow: 
+    inset 0 0 5px rgba(0,0,0,0.3),
+    inset 2px 2px 5px rgba(255,255,255,0.4),
+    0 4px 10px rgba(120, 10, 20, 0.4);
+  transition: transform 0.8s var(--anim-ease), opacity 0.5s ease;
+  border: 1px solid #9e141f;
+}
+
+/* Subtle inner ring for wax stamp look */
+.seal::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255, 200, 200, 0.25);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.envelope.open .seal {
+  transform: rotateX(180deg) scale(0.5);
+  opacity: 0;
+}
+
+/* ── Envelope hover micro-interaction ──────────────────── */
+.envelope-wrapper:not(.opened):hover {
+  transform: scale(1.02) translateY(-5px);
+}
+
+.envelope-wrapper:not(.opened):hover .seal {
+  transform: scale(1.1);
+  box-shadow: 
+    inset 0 0 5px rgba(0,0,0,0.3),
+    inset 2px 2px 5px rgba(255,255,255,0.5),
+    0 6px 15px rgba(120, 10, 20, 0.5);
+}
+
+/* ══════════════════════════════════════════════════════════
+   THE LETTER  (now a standalone element outside envelope)
+   ══════════════════════════════════════════════════════════ */
+.letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: var(--letter-width);
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s var(--anim-ease), transform 0.8s var(--anim-ease);
+}
+
+/* When opened: letter fades in and scales up */
+body.opened .letter {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+/* ── Notebook paper styling ────────────────────────────── */
+.letter-paper {
+  position: relative;
+  background-color: var(--cream);
+  /* Horizontal ruled lines */
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent calc(var(--line-height-paper) - 1px),
+      var(--line-color) calc(var(--line-height-paper) - 1px),
+      var(--line-color) var(--line-height-paper)
+    );
+  background-size: 100% var(--line-height-paper);
+  background-position: 0 1.9rem; /* tuned so ruled lines land on Caveat baseline */
+  border: 1px solid #e0d5c5;
+  border-radius: 4px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    inset 0 0 60px rgba(255, 240, 230, 0.5);
+  /* DYNAMIC HEIGHT — grows with content */
+  height: auto;
+  padding: 2.5rem 2.5rem 2.5rem 4rem;
+  overflow: visible;
+}
+
+/* Subtle paper texture overlay */
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+/* Red vertical margin line */
+.margin-line {
+  position: absolute;
+  top: 0;
+  left: 3rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--margin-color);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+
+
+/* ── Letter body typography ────────────────────────────── */
+.letter-body {
+  position: relative;
+  z-index: 1;
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  line-height: var(--line-height-paper);
+  color: #3a3a5c;
+  /* Ensure text sits ON the lines */
+}
+
+.letter-body p {
+  margin-bottom: var(--line-height-paper);
+}
+
+.letter-date {
+  text-align: right;
+  font-size: 1.1rem;
+  color: #8a8aaa;
+  margin-bottom: calc(var(--line-height-paper) * 1) !important;
+}
+
+.confession-highlight {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.8rem;
+  color: var(--pink-600);
+  text-align: center;
+  /* Keep on the 2rem line grid: 1rem + 2rem + 1rem = 4rem = 2×line-height */
+  line-height: var(--line-height-paper);
+  padding: 1rem 0;
+}
+
+.letter-closing {
+  margin-top: 0;
+  text-align: right;
+}
+
+.letter-signature {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.6rem;
+  color: var(--pink-500);
+}
+
+/* Custom scrollbar for the letter */
+body.opened .letter::-webkit-scrollbar {
+  width: 6px;
+}
+body.opened .letter::-webkit-scrollbar-track {
+  background: transparent;
+}
+body.opened .letter::-webkit-scrollbar-thumb {
+  background: var(--pink-300);
+  border-radius: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  :root {
+    --line-height-paper: 1.75rem;
+  }
+
+  .letter-body {
+    font-size: 1.15rem;
+  }
+
+  .confession-highlight {
+    font-size: 1.45rem;
+    line-height: 2.2rem;
+  }
+
+  .letter-paper {
+    padding: 2rem 1.8rem 2rem 3.2rem;
+  }
+
+  .margin-line {
+    left: 2.2rem;
+  }
+
+  .lily {
+    width: clamp(70px, 22vw, 140px);
+    opacity: 0.6;
+  }
+
+  .lily-letter-left,
+  .lily-letter-right {
+    display: none; /* hide on small screens to avoid clutter */
+  }
+
+  .prompt-text {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .letter-paper {
+    padding: 1.5rem 1.2rem 1.5rem 2.8rem;
+  }
+
+  .margin-line {
+    left: 1.8rem;
+  }
+
+  .letter-body {
+    font-size: 1.05rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ENTRANCE ANIMATION for the letter (delayed reveal)
+   ──────────────────────────────────────────────────────────
+   The transition is already on .letter; this adds a delay
+   so the envelope has time to fly away first.
+   ══════════════════════════════════════════════════════════ */
+body.opened .letter {
+  transition-delay: 0.5s;
+}
+
+/* Dim the envelope area background after opening */
+body.opened::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 240, 243, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+  animation: fadeIn 0.8s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   "DONE READING" BUTTON
+   ══════════════════════════════════════════════════════════ */
+.done-reading-wrapper {
+  text-align: center;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.done-reading-btn {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink-400), var(--pink-600));
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 2.2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 18px rgba(228, 87, 128, 0.35),
+    0 0 0 0 rgba(251, 111, 146, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: btnPulseGlow 2.5s ease-in-out infinite;
+  letter-spacing: 0.03em;
+}
+
+.done-reading-btn:hover {
+  transform: scale(1.06);
+  box-shadow:
+    0 6px 24px rgba(228, 87, 128, 0.45),
+    0 0 0 6px rgba(251, 111, 146, 0.15);
+}
+
+.done-reading-btn:active {
+  transform: scale(0.97);
+}
+
+/* Shimmer sweep across the button */
+.done-reading-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { left: -100%; }
+  50% { left: 100%; }
+}
+
+@keyframes btnPulseGlow {
+  0%, 100% { box-shadow: 0 4px 18px rgba(228, 87, 128, 0.35), 0 0 0 0 rgba(251, 111, 146, 0.4); }
+  50% { box-shadow: 0 4px 24px rgba(228, 87, 128, 0.5), 0 0 0 8px rgba(251, 111, 146, 0); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAPER SHREDDER ANIMATION
+   ──────────────────────────────────────────────────────────
+   1. Subtle vibration on the letter (shredder motor)
+   2. Vertical cut lines appear across the paper
+   3. JS clones the paper into N vertical strip divs
+   4. Each strip falls with stagger, rotation, & flutter
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Step 1: Shredder vibration (runs briefly) ─────────── */
+.letter.shredding {
+  animation: shredVibrate 0.04s linear infinite;
+}
+
+@keyframes shredVibrate {
+  0%   { transform: translate(-50%, -50%) translateX(0); }
+  25%  { transform: translate(-50%, -50%) translateX(1.2px); }
+  50%  { transform: translate(-50%, -50%) translateX(0); }
+  75%  { transform: translate(-50%, -50%) translateX(-1.2px); }
+  100% { transform: translate(-50%, -50%) translateX(0); }
+}
+
+/* ── Step 2: Cut lines appear on the paper ─────────────── */
+.letter-paper.slicing::before {
+  /* Override the texture overlay to show cut lines instead */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(100% / 14 - 0.5px),
+      rgba(0, 0, 0, 0.2) calc(100% / 14 - 0.5px),
+      rgba(0, 0, 0, 0.2) calc(100% / 14)
+    ) !important;
+  opacity: 1 !important;
+  z-index: 10;
+  animation: cutLinesAppear 0.4s ease-out both;
+}
+
+@keyframes cutLinesAppear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Step 3 & 4: Shred strip container & falling strips ── */
+.shred-container {
+  position: fixed;
+  z-index: 25;
+  pointer-events: none;
+  /* top, left, width, height set by JS from the letter's bounding rect */
+}
+
+.shred-strip {
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  /* width and left set by JS per-strip */
+}
+
+/* Each strip's clone matches the original paper look */
+.shred-strip .letter-paper {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  /* left and width set by JS to offset into the correct column */
+}
+
+/* ── Strip fall animation ──────────────────────────────── *
+ * --rot : random rotation assigned by JS (-15 to 15 deg)
+ * --drift : random horizontal drift assigned by JS
+ * --delay : stagger delay assigned by JS                  */
+.shred-strip.falling {
+  animation: stripFall var(--fall-dur, 2s) cubic-bezier(0.25, 0, 0.7, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes stripFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  15% {
+    transform: translateY(8vh) rotate(calc(var(--rot, 3deg) * 0.3));
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform:
+      translateY(115vh)
+      translateX(var(--drift, 0px))
+      rotate(var(--rot, 5deg));
+    opacity: 0;
+  }
+}
+
+/* ── Flutter variant for every other strip ─────────────── */
+.shred-strip.falling:nth-child(even) {
+  animation-name: stripFallFlutter;
+}
+
+@keyframes stripFallFlutter {
+  0% {
+    transform: translateY(0) rotate(0deg) rotateY(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(12vh) rotate(calc(var(--rot, -3deg) * 0.4)) rotateY(15deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(50vh) rotate(calc(var(--rot, -3deg) * 0.7)) rotateY(-10deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform:
+      translateY(115vh)
+      translateX(var(--drift, 0px))
+      rotate(var(--rot, -5deg))
+      rotateY(20deg);
+    opacity: 0;
+  }
+}
+
+/* ── Letter hidden after shred ─────────────────────────── */
+.letter.shredded {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   AFTERMATH SCREEN (shown after shred completes)
+   ══════════════════════════════════════════════════════════ */
+.ash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(35, 18, 25, 0.97) 0%,
+    rgba(15, 8, 12, 0.99) 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.ash-screen.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Aftermath content & text ──────────────────────────── */
+.ash-content {
+  text-align: center;
+  z-index: 2;
+  animation: ashContentFadeIn 2s ease 0.5s both;
+}
+
+@keyframes ashContentFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ash-text {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  color: rgba(255, 200, 215, 0.9);
+  line-height: 2.2;
+  max-width: min(600px, 85vw);
+  text-shadow:
+    0 0 30px rgba(251, 111, 146, 0.4),
+    0 0 60px rgba(251, 111, 146, 0.15);
+  padding: 0 1rem;
+}
+
+/* ── Floating paper confetti (falls down, tumbles) ──────── */
+.confetti-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 600px;
+}
+
+.confetti-strip {
+  position: absolute;
+  width: 6px;
+  height: 24px;
+  background-color: #fdf2f5;
+  border-radius: 1px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  top: -30px;
+  animation: confettiTumble 8s linear infinite;
+  animation-delay: calc(var(--k) * 0.8s);
+  left: calc(var(--k) * 6.5% + 5%);
+}
+
+.confetti-strip:nth-child(odd) {
+  background-color: #fce1e8;
+  width: 8px;
+  height: 18px;
+  animation-duration: 10s;
+}
+
+.confetti-strip:nth-child(3n) {
+  background-color: #f9ccd8;
+  width: 5px;
+  height: 28px;
+  animation-duration: 9s;
+}
+
+@keyframes confettiTumble {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(55vh) rotateX(360deg) rotateY(180deg) rotateZ(45deg) translateX(25px);
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(115vh) rotateX(720deg) rotateY(360deg) rotateZ(90deg) translateX(-15px);
+  }
+}
+
+/* ── Play music button (shown on aftermath-state reload) ── */
+.play-music-btn {
+  display: none;
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  color: rgba(255, 200, 215, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 200, 215, 0.15);
+  border-radius: 50px;
+  padding: 0.6rem 1.8rem;
+  margin-top: 2.5rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  animation: gentlePulse 2.5s ease-in-out infinite;
+}
+
+.play-music-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 220, 230, 0.95);
+  border-color: rgba(255, 200, 215, 0.3);
+  transform: scale(1.04);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SHREDDED STATE OVERRIDES
+   ──────────────────────────────────────────────────────────
+   When body has .shredded class (after shred or on reload),
+   switch to a dark, moody aesthetic.
+   ══════════════════════════════════════════════════════════ */
+body.shredded {
+  background: linear-gradient(160deg, #1a1215, #2a1a1f, #1a1215);
+}
+
+body.shredded::after {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+body.shredded .floating-hearts { opacity: 0.15; }
+body.shredded .lily { opacity: 0.08; }

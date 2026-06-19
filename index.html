@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter For You 💌</title>
+  <meta name="description" content="A romantic confession letter, just for you." />
+
+  <!-- Google Fonts: Handwritten romantic fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BACKGROUND SONG
+       ─────────────────────────────────────────────────────────
+       Replace the src below with the path to your audio file.
+       Example: src="assets/my-song.mp3"
+       ═══════════════════════════════════════════════════════════ -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="assets/song.mp3" type="audio/mpeg" />
+    <!-- ADD FALLBACK FORMATS HERE IF NEEDED -->
+    <!-- <source src="assets/song.ogg" type="audio/ogg" /> -->
+  </audio>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FLOATING HEARTS  (decorative background particles)
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="floating-hearts" aria-hidden="true">
+    <span class="heart" style="--i:0">♥</span>
+    <span class="heart" style="--i:1">♥</span>
+    <span class="heart" style="--i:2">♥</span>
+    <span class="heart" style="--i:3">♥</span>
+    <span class="heart" style="--i:4">♥</span>
+    <span class="heart" style="--i:5">♥</span>
+    <span class="heart" style="--i:6">♥</span>
+    <span class="heart" style="--i:7">♥</span>
+    <span class="heart" style="--i:8">♥</span>
+    <span class="heart" style="--i:9">♥</span>
+    <span class="heart" style="--i:10">♥</span>
+    <span class="heart" style="--i:11">♥</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CRAYON LILY DECORATIONS
+       ─────────────────────────────────────────────────────────
+       Replace each src with your own crayon-style lily image.
+       Example: src="assets/lily-crayon-1.png"
+       The classes control positioning (top-left, top-right, etc.)
+       ═══════════════════════════════════════════════════════════ -->
+  <img src="assets/lily-top-left.png" alt="Crayon lily decoration" class="lily lily-top-left" />
+  <img src="assets/lily-top-right.png" alt="Crayon lily decoration" class="lily lily-top-right" />
+  <img src="assets/lily-bottom-left.png" alt="Crayon lily decoration" class="lily lily-bottom-left" />
+  <img src="assets/lily-bottom-right.png" alt="Crayon lily decoration" class="lily lily-bottom-right" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PROMPT TEXT (visible before opening)
+       ═══════════════════════════════════════════════════════════ -->
+  <p class="prompt-text" id="prompt-text">turn up the volume</p>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ENVELOPE
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="envelope-shadow" id="envelope-shadow"></div>
+  <div class="envelope-wrapper" id="envelope-wrapper">
+    <div class="envelope" id="envelope">
+
+      <!-- Envelope back (the body behind the letter) -->
+      <div class="envelope-back">
+        <div class="postage-stamp"></div>
+      </div>
+
+      <!-- Envelope front flaps -->
+      <div class="envelope-front">
+        <div class="envelope-flap-left"></div>
+        <div class="envelope-flap-right"></div>
+        <div class="envelope-flap-bottom"></div>
+        <!-- Top flap (the one that opens) -->
+        <div class="envelope-flap-top">
+          <div class="seal">♥</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════
+       THE CONFESSION LETTER
+       ─────────────────────────────────────────────────────────
+       ✏️  INSERT YOUR TEXT inside the <div class="letter-body">
+       The lined-paper background will auto-expand to fit
+       any amount of text you write.
+       ═════════════════════════════════════════════════════════ -->
+  <div class="letter" id="letter">
+    <div class="letter-paper">
+      <!-- Red margin line on left -->
+      <div class="margin-line"></div>
+
+      <div class="letter-body">
+        <!-- ╔═══════════════════════════════════════════════╗
+             ║  ✏️  YOUR CONFESSION TEXT GOES HERE  ✏️       ║
+             ║  Just type naturally — the lined paper will   ║
+             ║  grow to fit whatever you write.              ║
+             ╚═══════════════════════════════════════════════╝ -->
+
+        <p class="letter-date">June 20, 2026</p>
+
+        <p>My Dearest,</p>
+
+        <p>
+          ***********, such a beautiful name. I know we haven't known each other for very long, and it’s only
+          been online, but I needed to get this off my chest. ***, this might sound crazy since we haven't actually met
+          in person and are basically strangers, but I think I’ve developed feelings for you.
+        </p>
+
+        <p>
+          At first, I thought we would just be ordinary friends. But after playing games together and sharing our
+          stories, I realized how comfortable I feel with you. It’s honestly surprising how attached I've become; even
+          when we aren't talking, you're the one on my mind.
+        </p>
+
+        <p>To be honest, I was in denial about it for a while. The idea of falling for someone purely online always
+          seemed a bit foolish to me. But over time, I realized I was wrong</p>
+
+        <p class="confession-highlight">***, I Really Do Like You</p>
+
+        <p>I also want to say a huge thank you. Liking you has honestly made me want to become a better version of
+          myself. Because of you, I've been trying to improve every day such as eating healthier, being more physically
+          active, and focusing harder on my studies. Even if nothing comes of this confession, I'm so grateful for the
+          positive impact you've had on my life.</p>
+
+        <p>
+          I'm sorry if telling you this seems a bit selfish, or like I'm just doing it to give myself some peace of
+          mind. I also want to apologize if you already have someone special in your life. Please don't let this letter
+          burden you, and feel absolutely no pressure to respond the same way.
+        </p>
+
+        <p>
+          I just had to let you know. I really hope we can still be friends after this without things being awkward,
+          even though I know that might be difficult. Regardless of what happens, I wish you all the best with your
+          studies, your family, and your future.
+        </p>
+
+        <p class="letter-closing">
+          Sincerely,<br />
+          <span class="letter-signature">— Your Not So Secret Admirer</span>
+        </p>
+
+        <!-- ═══ END OF YOUR TEXT ═══ -->
+
+        <!-- ═══════════════════════════════════════════════════
+             "DONE READING" BUTTON
+             ═══════════════════════════════════════════════════ -->
+        <div class="done-reading-wrapper">
+          <button class="done-reading-btn" id="done-reading-btn">
+            I've finished reading&ensp;♥
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ASH SCREEN (shown after the letter finishes burning)
+       ─────────────────────────────────────────────────────────
+       ✏️  Replace the text inside .ash-text with your own message.
+       This is the text that appears on top of the "ashes."
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="ash-screen" id="ash-screen">
+    <!-- Floating paper confetti/shreds -->
+    <div class="confetti-particles" aria-hidden="true">
+      <div class="confetti-strip" style="--k:0"></div>
+      <div class="confetti-strip" style="--k:1"></div>
+      <div class="confetti-strip" style="--k:2"></div>
+      <div class="confetti-strip" style="--k:3"></div>
+      <div class="confetti-strip" style="--k:4"></div>
+      <div class="confetti-strip" style="--k:5"></div>
+      <div class="confetti-strip" style="--k:6"></div>
+      <div class="confetti-strip" style="--k:7"></div>
+      <div class="confetti-strip" style="--k:8"></div>
+      <div class="confetti-strip" style="--k:9"></div>
+      <div class="confetti-strip" style="--k:10"></div>
+      <div class="confetti-strip" style="--k:11"></div>
+      <div class="confetti-strip" style="--k:12"></div>
+      <div class="confetti-strip" style="--k:13"></div>
+      <div class="confetti-strip" style="--k:14"></div>
+    </div>
+
+    <div class="ash-content">
+      <!-- ╔═══════════════════════════════════════════════╗
+           ║  ✏️  YOUR AFTERMATH TEXT GOES HERE          ✏️  ║
+           ╚═══════════════════════════════════════════════╝ -->
+      <p class="ash-text">
+        I Really Hoping That You Won't Mind.<br />
+        And Thank You.
+      </p>
+      <!-- ═══ END OF ASH TEXT ═══ -->
+
+      <!-- Play button (only shown when reloading in burned state) -->
+      <button class="play-music-btn" id="play-music-btn">♫ tap to play our song</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       INLINE LILY DECORATIONS FOR THE LETTER (appear after open)
+       ─────────────────────────────────────────────────────────
+       These lilies frame the letter itself. Replace src as above.
+       ═══════════════════════════════════════════════════════════ -->
+  <img src="assets/lily-letter-left.png" alt="Crayon lily decoration" class="lily lily-letter-left" />
+  <img src="assets/lily-letter-right.png" alt="Crayon lily decoration" class="lily lily-letter-right" />
+
+  <script src="script.js"></script>
+</body>
+
+</html>
